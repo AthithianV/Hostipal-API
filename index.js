@@ -22,6 +22,9 @@ server.use(cookieParser());
 server.use(LoggerMiddleware);
 
 // Redirect to Specific paths.
+server.get("/", (req, res, next) => {
+  res.status(200).send("Welcome to Hospital API");
+});
 server.use("/doctors/", DoctorRouter);
 server.use("/patients/", authMiddleware, PatientRouter);
 server.use("/reports/", authMiddleware, PatientRouter);
@@ -36,9 +39,8 @@ server.use(ErrorHandler);
 
 // Run server.
 const port = process.env.PORT || 10000;
-const url = process.env.DB_URL;
 
 server.listen(port, () => {
   console.log("Server listens at port " + port);
-  connectToMongoDB(url);
+  connectToMongoDB();
 });
