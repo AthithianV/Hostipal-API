@@ -5,14 +5,6 @@ const DoctorSchema = mongoose.Schema({
   password: {
     type: String,
     required: true,
-    validate: {
-      // Validation function for password
-      validation: (value) => {
-        return /^(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/.test(value);
-      },
-      message:
-        "Password should contains atleast 8 character, must including one uppercase, one lowercase and one special character",
-    },
   },
   gender: { type: String, enum: ["MALE", "FEMALE"] },
   specilization: { type: String },

@@ -8,8 +8,8 @@ const PatientSchema = mongoose.Schema({
     required: true,
     unique: true,
     validate: {
-      validattion: (value) => {
-        return value.length() == 10;
+      validator: (value) => {
+        return /^\d{10}$/.test(value);
       },
       message: "Invalid Mobile Number",
     },

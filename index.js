@@ -6,11 +6,12 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 // Internal Imports
-import { ErrorHandler } from "./src/middlewares/ErrorHandler";
+import { ErrorHandler } from "./src/middlewares/ErrorHandler.js";
 import LoggerMiddleware from "./src/middlewares/logger.middleware.js";
 import connectToMongoDB from "./src/config/connectToDatabase.js";
 import DoctorRouter from "./src/features/doctor/doctor.routes.js";
 import PatientRouter from "./src/features/patient/patient.routes.js";
+import authMiddleware from "./src/middlewares/auth.middleware.js";
 
 // create server
 const server = express();
@@ -22,19 +23,22 @@ server.use(LoggerMiddleware);
 
 // Redirect to Specific paths.
 server.use("/doctors/", DoctorRouter);
-server.use("/patients/", PatientRouter);
+server.use("/patients/", authMiddleware, PatientRouter);
+server.use("/reports/", authMiddleware, PatientRouter);
 
 // Handle for unknow req url.
 server.use((req, res, next) => {
-  res.status(400).send("API DOES NOT EXISTS FOR" + req.url);
+  res.status(400).send("API DOES NOT EXISTS FOR " + req.url);
 });
 
 // Error Handling
 server.use(ErrorHandler);
 
 // Run server.
-const port = process.env.PORT || 1000;
+const port = process.env.PORT || 10000;
+const url = process.env.DB_URL;
+
 server.listen(port, () => {
   console.log("Server listens at port " + port);
-  connectToMongoDB();
+  connectToMongoDB(url);
 });

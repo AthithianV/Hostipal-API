@@ -12,7 +12,7 @@ const authMiddleware = (req, res, next) => {
   // Get payload and add it to request, if error occurs send unauthorized.
   try {
     const payload = jwt.verify(token, process.env.SECRETKEY);
-    req.username = payload.username;
+    req.doctor = payload;
   } catch (error) {
     return res.status(400).json({ success: false, message: "Unauthorized" });
   }

@@ -22,7 +22,7 @@ export const register = async (req, res, next) => {
       Doctor_Details: doctor,
     });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
 
@@ -39,14 +39,14 @@ export const login = async (req, res, next) => {
     }
 
     // Compare passwaord, throw error for wrong password
-    const verify = bcrypt.compare(password, doctor.password);
+    const verify = await bcrypt.compare(password, doctor.password);
     if (!verify) {
       throw new ApplicationError("Incorrect Password", 400);
     }
 
     // Create a token which expires in 5h
     const token = jwt.sign(
-      { username: doctor.username },
+      { doctorname: doctor.username, doctorId: doctor._id },
       process.env.SECRETKEY,
       { expiresIn: "5h" }
     );
@@ -57,10 +57,9 @@ export const login = async (req, res, next) => {
       .cookie("jwtToken", token, { maxAge: 5 * 60 * 60 * 1000, httpOnly: true })
       .json({
         success: true,
-        message: "Doctor Registration Successful",
         token: token,
       });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };

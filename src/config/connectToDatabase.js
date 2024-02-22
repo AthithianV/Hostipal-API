@@ -1,9 +1,7 @@
 import mongoose from "mongoose";
 
-const url = process.env.DB_URL;
-
 // Function for connecting to mongoDB
-const connectToMongoDB = async () => {
+const connectToMongoDB = async (url) => {
   try {
     await mongoose.connect(url);
     console.log("Connected to MongoDB");

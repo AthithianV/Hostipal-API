@@ -20,8 +20,7 @@ const LoggerMiddleware = (req, res, next) => {
   // Check if url contains "login", prevent logging of personal data.
   if (!req.url.includes("login")) {
     const logData = `Request URL: ${req.url}, Log Data: ${JSON.stringify(
-      req,
-      body
+      req.body
     )}`;
     logger.info(logData);
   }

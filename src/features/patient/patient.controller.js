@@ -15,20 +15,20 @@ export const register = async (req, res, next) => {
       patient_details: patient,
     });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
 
 // Create new report
 export const createReport = async (req, res, next) => {
   try {
-    const patientId = req.params.id;
-    const createdBy = req.username;
+    const patientId = req.params.patientId;
+    const { doctorId } = req.doctor;
     const date = new Date();
     const { status } = req.body;
     const report = await createReportRepo({
-      patientId,
-      createdBy,
+      patient: patientId,
+      createdBy: doctorId,
       date,
       status,
     });
@@ -38,21 +38,21 @@ export const createReport = async (req, res, next) => {
       report_details: report,
     });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
 
 // Get all reports of the patient.
 export const getAllReports = async (req, res, next) => {
   try {
-    const patientId = req.params.id;
+    const patientId = req.params.patientId;
     const reports = await getAllReportsRepo(patientId);
     res.status(201).json({
       success: true,
       reports: reports,
     });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };
 
@@ -60,12 +60,12 @@ export const getAllReports = async (req, res, next) => {
 export const getReportsWithStatus = async (req, res, next) => {
   try {
     const status = req.params.status;
-    const reports = await getReportsWithStatusRepo(patientId);
+    const reports = await getReportsWithStatusRepo(status);
     res.status(201).json({
       success: true,
       reports: reports,
     });
   } catch (error) {
-    throw error;
+    next(error);
   }
 };

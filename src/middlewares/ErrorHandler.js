@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 // ApplicationError class for throw custom error.
 export default class ApplicationError extends Error {
   constructor(msg, code) {
@@ -10,10 +12,13 @@ export default class ApplicationError extends Error {
 // Error handler to handle error.
 export const ErrorHandler = (err, req, res, next) => {
   console.log(err);
-
   // Check if the error is of type ApplicationError, then send msg acoordingly.
   if (err instanceof ApplicationError) {
-    return res.status(err.code).send({ success: false, message: err.msg });
+    return res.status(err.code).json({ success: false, message: err.msg });
+  }
+
+  if (err instanceof mongoose.Error.ValidationError) {
+    return res.status(400).json({ success: false, message: err._message });
   }
 
   // Check if error code is 11000, then it is duplicate Email error.
@@ -26,5 +31,5 @@ export const ErrorHandler = (err, req, res, next) => {
   // For all other error send oops msg
   res
     .status(500)
-    .send({ success: false, message: "Oops, Something Went wrong" });
+    .json({ success: false, message: "Oops, Something Went wrong" });
 };

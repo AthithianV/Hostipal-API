@@ -4,7 +4,7 @@ import ReportModel from "./report.schema.js";
 export const registerRepo = async (data) => {
   try {
     // Find patient by phone no
-    const foundPatient = await PatientModel.find({
+    const foundPatient = await PatientModel.findOne({
       phone_no: data.phone_no,
     });
 
@@ -18,7 +18,6 @@ export const registerRepo = async (data) => {
     await newPatient.save();
     return { message: "Patient Registration Successful", patient: newPatient };
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };
@@ -30,7 +29,7 @@ export const createReportRepo = async (data) => {
     await newReport.save();
 
     // update reports array in document of the patient
-    const patient = await PatientModel.findById(data.patientId);
+    const patient = await PatientModel.findById(data.patient);
     patient.reports.push(newReport._id);
 
     return newReport;
@@ -43,9 +42,10 @@ export const createReportRepo = async (data) => {
 export const getAllReportsRepo = async (patientId) => {
   try {
     // Get all reports with given patient Id, the reports and patient name for the is selected.
-    const allReport = await PatientModel.findById(patientId)
-      .select("reports patient_name")
-      .populate("report");
+    const allReport = await ReportModel.find({ patient: patientId }).populate({
+      path: "patient",
+      select: "patient_name gender",
+    });
     return allReport;
   } catch (error) {
     console.log(error);
