@@ -1,5 +1,6 @@
 import winston from "winston";
 
+// Logger for info
 const logger = winston.createLogger({
   level: "info",
   format: winston.format.json(),
@@ -8,6 +9,7 @@ const logger = winston.createLogger({
   ],
 });
 
+// Logger for error
 export const ErrorLogger = winston.createLogger({
   level: "error",
   format: winston.format.json(),
@@ -15,6 +17,7 @@ export const ErrorLogger = winston.createLogger({
 });
 
 const LoggerMiddleware = (req, res, next) => {
+  // Check if url contains "login", prevent logging of personal data.
   if (!req.url.includes("login")) {
     const logData = `Request URL: ${req.url}, Log Data: ${JSON.stringify(
       req,

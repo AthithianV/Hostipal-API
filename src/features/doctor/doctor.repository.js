@@ -11,6 +11,7 @@ export const registerRepo = async (data) => {
   }
 };
 
+// Find doctor by usernaem
 export const findDoctor = async (username) => {
   try {
     return await DoctorModel.find({ username });

@@ -9,6 +9,8 @@ import cookieParser from "cookie-parser";
 import { ErrorHandler } from "./src/middlewares/ErrorHandler";
 import LoggerMiddleware from "./src/middlewares/logger.middleware.js";
 import connectToMongoDB from "./src/config/connectToDatabase.js";
+import DoctorRouter from "./src/features/doctor/doctor.routes.js";
+import PatientRouter from "./src/features/patient/patient.routes.js";
 
 // create server
 const server = express();
@@ -18,13 +20,16 @@ server.use(cors());
 server.use(cookieParser());
 server.use(LoggerMiddleware);
 
-server.use("/api/doctor");
-server.use("/api/patient");
+// Redirect to Specific paths.
+server.use("/doctors/", DoctorRouter);
+server.use("/patients/", PatientRouter);
 
+// Handle for unknow req url.
 server.use((req, res, next) => {
   res.status(400).send("API DOES NOT EXISTS FOR" + req.url);
 });
 
+// Error Handling
 server.use(ErrorHandler);
 
 // Run server.

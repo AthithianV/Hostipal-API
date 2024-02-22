@@ -5,3 +5,5 @@ const DoctorRouter = express();
 
 DoctorRouter.post("/register", register);
 DoctorRouter.post("/login", login);
+
+export default DoctorRouter;

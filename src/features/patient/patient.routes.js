@@ -12,3 +12,5 @@ PatientRouter.post("/register", register);
 PatientRouter.post("/:patientId/create_report", createReport);
 PatientRouter.get("/:patientId/all_reports", getAllReports);
 PatientRouter.get("/reports/:status", getReportsWithStatus);
+
+export default PatientRouter;

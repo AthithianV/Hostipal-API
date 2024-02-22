@@ -6,6 +6,7 @@ const DoctorSchema = mongoose.Schema({
     type: String,
     required: true,
     validate: {
+      // Validation function for password
       validation: (value) => {
         return /^(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/.test(value);
       },
