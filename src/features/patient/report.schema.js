@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const ReportSchema = mongoose.Schema({
-  createBy: { type: mongoose.Types.ObjectId, ref: "doctor" },
+  createdBy: { type: mongoose.Types.ObjectId, ref: "doctor" },
   patient: { type: mongoose.Types.ObjectId, ref: "patient" },
   status: {
     type: String,
@@ -16,3 +16,4 @@ const ReportSchema = mongoose.Schema({
 });
 
 const ReportModel = mongoose.model("report", ReportSchema);
+export default ReportModel;
