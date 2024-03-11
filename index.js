@@ -31,7 +31,7 @@ server.use("/reports/", authMiddleware, PatientRouter);
 
 // Handle for unknow req url.
 server.use((req, res, next) => {
-  res.status(400).send("Page not Found" + req.url);
+  res.status(400).send("Page not Found");
 });
 
 // Error Handling
